@@ -1,0 +1,43 @@
+---
+
+## 📅 Registro de Conclusão
+* **Desenvolvido por:** Hiago
+* **Data do Laboratório:** 09/06/2026
+* **Status:** Concluído com 100% dos comandos validados no terminal.
+
+# Laboratório Prático: Administração, Redes e Cibersegurança em Sistemas Linux
+
+Este repositório reúne os registros práticos e comandos validados durante as minhas sessões de estudo em sistemas operacionais baseados em Linux (Ubuntu Desktop/KDE Plasma). O objetivo principal foi consolidar conhecimentos operacionais em gerenciamento de pacotes, manipulação de arquivos com foco em forense/auditoria, configuração de redes locais e implementação de hardening e análise de logs para SOC (Security Operations Center).
+
+---
+
+## 🛠️ Tecnologias e Utilitários Utilizados
+* **Sistemas/Interfaces:** Ubuntu Linux, GNOME Extensions, KDE Plasma Desktop.
+* **Redes & Diagnóstico:** `iproute2`, `nmap`, `tcpdump`, `dhclient`, `ufw`, `nc (netcat)`, `traceroute`.
+* **Monitoramento & Processos:** `htop`, `btop`, `systemd`.
+* **Forense & Utilitários:** `shred`, `grep`, `wine`, `7zip`, `corectrl`.
+
+---
+
+## 📖 Módulos Desenvolvidos
+
+### 1. Administração de Sistema e Otimização do Ambiente
+* **Gerenciamento de Janelas e Customização:** Instalação e configuração de servidores gráficos, gerenciadores de exibição (`sddm`), extensões avançadas do GNOME Shell (Desktop Cube via CLI) e ferramentas de customização visual (`gnome-tweaks`).
+* **Automação de Inicialização:** Customização do interpretador de comandos injetando telemetria estática (`fastfetch`) via arquivo de configuração do usuário (`~/.bashrc`).
+* **Manutenção do Sistema:** Execução de rotinas de limpeza de pacotes órfãos e arquivos temporários de instalação utilizando os seletores avançados do APT (`clean` e `autoremove`), seguidos pelo mapeamento lógico de blocos e partições de disco via `lsblk` e `df -h`.
+
+### 2. Redes e Análise de Tráfego de Dados
+* **Manipulação de Interfaces e DHCP:** Análise detalhada do endereçamento IPv4/IPv6 local, simulação de renovação e expiração de concessão (leases) de IP em servidores DHCP por meio da ferramenta `dhclient` e auditoria de registros em `/var/log/syslog`.
+* **Mapeamento de Host e Tabela ARP:** Consulta e verificação do emparelhamento estático/dinâmico de endereços IP com seus respectivos MAC Addresses utilizando `arp -n` e o utilitário moderno `ip neighbor`.
+* **Segurança de Borda (Firewalling) e Resolução:** Implementação de regras restritivas através do `ufw` para bloqueio de requisições de ICMP (Ping) e portas legadas ou críticas (ex: FTP/21). Diagnóstico de conectividade ativa com `netcat (nc)`, análise de saltos de rota com `traceroute` e requisições DNS diretas via `dig`.
+* **Captura de Pacotes:** Utilização do `tcpdump` para snifagem e inspeção de cabeçalhos de rede no terminal em modo hexadecimal estruturado.
+
+### 3. Engenharia Reversa e Compatibilidade
+* **Arquiteturas Híbridas:** Habilitação e suporte do ecossistema de 32 bits em distribuições modernas de 64 bits (`dpkg --add-architecture i386`).
+* **Camada de Compatibilidade Windows:** Instalação do subsistema `Wine` e ferramentas de manipulação de binários proprietários (.exe), avaliando o comportamento e integridade de aplicações portáveis legadas no ecossistema Linux.
+
+### 4. Hardening e Segurança da Informação (Perspectiva SOC)
+* **Controle de Acesso e Permissões:** Criação de usuários de teste através de privilégios elevados (`sudo adduser`) e validação de chaves de integridade criptográfica.
+* **Privilégios Especiais (SUID):** Aplicação de permissões restritivas em arquivos contendo credenciais críticas (`chmod 600`), transferência de propriedade para a conta administrativa (`chown root:root`) e auditoria/simulação de vetores de privilégio via controle de bits especiais SUID (`chmod +s`), seguidos por varreduras localizadas para detecção de arquivos potencialmente vulneráveis:
+  ```bash
+  sudo find / -perm -4000 -type f 2>/dev/null
