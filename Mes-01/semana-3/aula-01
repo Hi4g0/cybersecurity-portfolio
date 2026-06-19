@@ -1,0 +1,90 @@
+📂 Laboratório de SOC: Detecção de Port Scan e Engenharia de Alertas Automatizados
+
+Este documento consolida o laboratório prático realizado no dia 18 de Junho, focado em Engenharia de Detecção Comportamental, captura ativa de eventos do sistema operacional com Docker/Promtail/Loki e automação de alertas no Grafana contra ataques de reconhecimento de rede.
+🏗️ 1. Infraestrutura do Laboratório (Stack Docker)
+
+O ecossistema de monitoramento centralizado é gerenciado via Docker Compose, permitindo o isolamento completo da stack de telemetria e segurança:
+
+    Promtail: Agente leve que monitora os arquivos de logs do Kali Linux em tempo real e os despacha para o servidor central com tags estruturadas.
+
+    Grafana Loki: Banco de dados de logs (datastore) otimizado para o ecossistema, indexando apenas os metadados para garantir buscas rápidas em volumes massivos.
+
+    Grafana Dashboard: Painel visual unificado para consultas via LogQL, plotagem estatística e configuração de acionadores automáticos (triggers).
+
+Para garantir a inicialização e resiliência do ecossistema, os serviços são gerenciados via terminal:
+Bash
+
+cd ~/grafana-lab
+sudo docker compose up -d
+
+🛠️ 2. Mapeamento de Fontes de Logs e Rótulos (Labels)
+
+Durante as análises, inspecionamos os metadados brutos enviados ao Grafana. O Promtail captura e classifica as seguintes fontes de dados cruciais sob o job central {job="varlogs"}:
+Arquivo de Log Coletado	Metadados / Labels Identificados	Caso de Uso Prático no SOC
+/var/log/fail2ban.log	{detected_level="info", service_name="varlogs"}	Monitoramento de IPs bloqueados por ataques persistentes de força bruta.
+/var/log/Xorg.0.log	{detected_level="warn"/"unknown", service_name="varlogs"}	Investigação e telemetria de subsistemas e interface gráfica do host.
+/var/log/macchanger.log	{detected_level="unknown", service_name="varlogs"}	Identificação de tentativas ilegítimas de alteração e spoofing de endereço MAC.
+/var/log/auth.log	{detected_level="info"/"warn", service_name="varlogs"}	Auditoria fina de logins, acessos SSH e tentativas de elevação de privilégios.
+/var/log/dpkg.log	{detected_level="unknown", service_name="varlogs"}	Auditoria de comandos e histórico do gerenciador de pacotes do Debian/Kali.
+⚔️ 3. Cenário Prático de Ataque: Simulação de Port Scan (Nmap)
+
+Para simular o comportamento de um agente de ameaça real na fase de Reconhecimento (Reconnaissance), executamos uma varredura agressiva de portas locais a partir do terminal do Kali Linux:
+Bash
+
+nmap -v -A localhost
+
+    -v (Verbose): Eleva o nível de detalhes visualizados no terminal durante a execução do scan.
+
+    -A (Agressive): Modo agressivo. Executa detecção de sistema operacional, enumeração de versões de serviços ativos e varreduras automatizadas por meio do NSE (Nmap Scripting Engine). Este comportamento gera alto volume de tráfego e registros anômalos no sistema.
+
+🔍 Triagem Avançada com LogQL
+
+Na console do Grafana Explore, rastreamos a assinatura explícita deixada pela ferramenta no ecossistema:
+Plaintext
+
+{service_name="varlogs"} |= "nmap"
+
+Este filtro isolou os registros textuais e confirmou que a atividade do atacante foi capturada, enviada pelo Promtail e armazenada no Loki com sucesso.
+📊 4. Detecção Comportamental Volumétrica (Análise de Spike)
+
+Em cenários reais de defesa, invasores experientes mascaram o nome das ferramentas para evadir regras estáticas. Por isso, implementamos a Detecção Baseada em Comportamento, focando na velocidade e volume de requisições.
+
+A atividade intensa do Nmap força a criação de centenas de logs em milissegundos. Usamos funções agregadoras de séries temporais para converter essas mensagens brutas em dados matemáticos:
+Plaintext
+
+count_over_time({service_name="varlogs"}[1m])
+
+📈 Comportamento Visual no Painel
+
+Ao plotar a métrica no painel personalizado (Painel de Monitoramento SOC), observamos um comportamento claro de anomalia:
+
+    Baseline (Linha de Base): Tráfego regular do sistema mantendo uma linha baixa e constante.
+
+    Spike (Pico Vertical): No minuto exato do ataque, o gráfico gerou uma elevação vertical abrupta (um "creste" para cima), identificando visualmente a ocorrência da anomalia sem a necessidade de varrer os arquivos de texto manualmente.
+
+🚨 5. Automação de Alertas e Engenharia de Resposta
+
+Para eliminar a dependência de análise visual contínua de um operador humano, foi modelada a arquitetura lógica de um Alerta Automatizado de Volumetria Crítica direto na central de mensageria do Grafana:
+
+    A Expressão Mestre (Query): O motor de avaliação monitora constantemente o volume de tráfego por minuto:
+    Plaintext
+
+    count_over_time({service_name="varlogs"}[1m])
+
+    A Condição de Disparo (Threshold): Definida matematicamente através da lógica:
+
+        WHEN last() OF A IS ABOVE 100 (Se o último valor coletado ultrapassar o limite crítico de 100 logs por minuto).
+
+    Mecanismo de Saturação (Mecanismo Antifalhas - Parâmetro FOR):
+
+        Configuração de For: 1m (O sistema precisa permanecer em estado crítico por pelo menos 1 minuto consecutivo antes de mudar o status para Firing). Isso evita a ocorrência de falsos positivos provocados por picos isolados legítimos do sistema operacional.
+
+Status do Laboratório: Concluído com sucesso. Stack validada, fontes mapeadas por rótulos, ataque detectado e lógica de alerta estruturada. Pronto para avançar para as próximas fases do SOC.
+🚀 Comandos para subir para o GitHub:
+
+Abra o terminal na pasta do seu repositório e execute:
+Bash
+
+git add README.md
+git commit -m "docs: portfolio completo da aula de 18 de junho - logs e alertas v2"
+git push origin main
