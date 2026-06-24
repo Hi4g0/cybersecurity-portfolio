@@ -1,0 +1,51 @@
+Aqui está o prompt estruturado para você mandar para o Copilot organizar as aulas na sua pasta do Git:
+
+> "Atue como um Engenheiro DevOps. Preciso que você crie um script em Bash para rodar no terminal do Kali Linux que automatize a criação dos arquivos de documentação no meu repositório local do GitHub. O script deve criar uma pasta chamada `Semana-3` (caso ela não exista) e, dentro dela, criar três arquivos Markdown separados contendo o conteúdo das aulas de Triagem de Logs.
+> Conteúdo do Arquivo 1 (`Semana-3/Aula-4.md`):
+> # Semana 3 - Aula 4: Identificação de Padrões e Códigos de Status HTTP
+> 
+> 
+> ## Conceitos Teóricos
+> 
+> 
+> * **200 OK**: Acesso permitido. Em cenários de força bruta, indica sucesso na invasão.
+> * **401 Unauthorized**: Falha de autenticação (senha errada).
+> * **403 Forbidden**: Acesso negado. Indica que o atacante tentou acessar diretórios restritos ou confidenciais.
+> * **404 Not Found**: Página não encontrada. Indica varredura (scanning) ativa onde o atacante 'chuta' nomes de arquivos comuns.
+> 
+> 
+> ## Atividade Prática
+> 
+> 
+> Análise visual de anomalias em logs brutos e identificação de requisições maliciosas direcionadas a arquivos críticos do sistema, como o `/etc/passwd`.
+> Conteúdo do Arquivo 2 (`Semana-3/Aula-5.md`):
+> # Semana 3 - Aula 5: Introdução à Lupa do Analista (grep)
+> 
+> 
+> ## Conceitos Teóricos
+> 
+> 
+> Uso de ferramentas nativas do Linux para filtrar grandes volumes de dados. O comando `grep` funciona como um mecanismo de busca avançado que isola o ruído do tráfego normal e expõe apenas as linhas suspeitas.
+> ## Comandos Práticos
+> 
+> 
+> Filtro de logs de servidores para isolar apenas tentativas de acesso que resultaram em bloqueio (403):
+> `grep "403" web_server.log`
+> Rastreamento completo do histórico de ações de um IP suspeito:
+> `grep "185.220.101.5" web_server.log`
+> Conteúdo do Arquivo 3 (`Semana-3/Aula-6.md`):
+> # Semana 3 - Aula 6: Automação e Geração de Rankings (awk, sort, uniq)
+> 
+> 
+> ## Conceitos Teóricos
+> 
+> 
+> Aprendi a construir pipelines de comando utilizando o operador `|` (Pipe) para passar a saída de um comando como entrada para o próximo, criando relatórios estatísticos instantâneos.
+> ## Comandos Práticos
+> 
+> 
+> Isolamento da primeira coluna de um log (IPs), ordenação e contagem de requisições repetidas:
+> `awk '{print $1}' web_server.log | sort | uniq -c`
+> Isolamento e contagem dos recursos/página web mais visados pelos atacantes:
+> `awk '{print $4}' web_server.log | sort | uniq -c`
+> Me entregue o código desse script em um bloco único de Bash utilizando o comando `cat` para gerar os arquivos diretamente, facilitando o meu processo de colar no terminal."
