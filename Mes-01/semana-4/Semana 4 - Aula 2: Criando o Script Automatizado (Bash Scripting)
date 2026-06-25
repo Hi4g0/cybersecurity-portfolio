@@ -1,0 +1,10 @@
+# Semana 4 - Aula 2: Criando o Script Automatizado (Bash Scripting)
+
+## 🧠 Conceitos Teóricos
+A leitura manual de logs é inviável em ambientes de produção com milhares de requisições por segundo. A automação através de scripts em Shell/Bash permite que o analista de segurança execute triagens complexas e gere relatórios de incidentes em frações de segundo. Aprendi sobre a estrutura de um script (`#!/bin/bash`) e gerenciamento de permissões no Linux.
+
+## 🛠️ Comandos Práticos
+Criação do script de triagem inicial `triagem.sh`.
+Atribuição de permissões de execução para o script no terminal:
+```bash
+chmod +x triagem.sh
