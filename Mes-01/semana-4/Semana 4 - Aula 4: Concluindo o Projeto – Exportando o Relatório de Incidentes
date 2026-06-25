@@ -1,0 +1,9 @@
+# Semana 4 - Aula 4: Concluindo o Projeto – Exportando o Relatório de Incidentes
+
+## 🧠 Conceitos Teóricos
+A etapa final de um processo de resposta a incidentes envolve a geração de evidências e relatórios textuais estruturados para auditoria ou acionamento de equipes de engenharia. Aprendi a utilizar operadores de redirecionamento de fluxo no Linux (`>`) para salvar saídas de scripts em arquivos estáticos de texto de forma totalmente automatizada.
+
+## 🛠️ Comandos Práticos
+Execução do script automatizado direcionando toda a saída do terminal diretamente para um arquivo de texto de auditoria:
+```bash
+./triagem.sh > alerta_final.txt
