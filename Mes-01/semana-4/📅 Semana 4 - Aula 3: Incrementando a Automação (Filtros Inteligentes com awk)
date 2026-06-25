@@ -1,0 +1,9 @@
+# Semana 4 - Aula 3: Incrementando a Automação (Filtros Inteligentes com awk)
+
+## 🧠 Conceitos Teóricos
+Evolução da lógica de script para refinar a saída visual dos alertas. Utilizei o comando `awk` focado na seleção e filtragem de colunas específicas delimitadas por espaços em branco (ex: `$1` para isolar o IP). Aprendi a aplicar o comando `sort -u` para consolidar dados, removendo duplicatas e entregando apenas os Indicadores de Comprometimento (IoCs) limpos para os tomadores de decisão.
+
+## 🛠️ Sintaxe de Lógica Aplicada
+Atualização do script de monitoramento para extrair cirurgicamente apenas os IPs dos atacantes envolvidos em atividades maliciosas:
+* **Filtro de Path Traversal:** `grep "\.\./" projeto_access.log | awk '{print $1}' | sort -u`
+* **Filtro de Invasão de Login:** `grep "login.php" projeto_access.log | grep "200" | awk '{print $1}'`
