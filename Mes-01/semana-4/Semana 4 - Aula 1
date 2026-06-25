@@ -1,0 +1,9 @@
+# Semana 4 - Aula 1: Mapeando o Cenário de Ataque e Identificando Padrões
+
+## 🧠 Conceitos Teóricos
+Antes de automatizar, um analista de SOC precisa entender a anatomia dos ataques através dos logs brutos. Nesta aula, analisamos um cenário real de lentidão no servidor onde identificamos dois vetores de ataque simultâneos:
+1. **Força Bruta (Brute Force):** Tentativas repetitivas contra a página `/login.php` gerando código `401` (Não Autorizado), culminando em um código `200 OK` (Invasão bem-sucedida).
+2. **Path Traversal (Directory Traversal):** Tentativas de burla de diretório utilizando sequências de caracteres `../../` para tentar ler arquivos sensíveis do sistema operacional (como `/etc/passwd` e `/var/log/`), mitigadas pelo servidor com o código `403 Forbidden`.
+
+## 🛠️ Atividade Prática
+Criação do arquivo de simulação de incidentes massivos `projeto_access.log` no ambiente Kali Linux para servir de base para o desenvolvimento das ferramentas de detecção.
