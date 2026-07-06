@@ -1,0 +1,22 @@
+cat << 'EOF' > README.md
+# CyberScout - Pro Network Scanner 🔍
+
+Este projeto em Python é uma ferramenta de **Emulação de Adversário (Red Team)** focada na fase de Reconhecimento de redes. O script atua realizando varreduras ativas em portas TCP específicas para identificar superfícies de ataque e expor serviços vulneráveis (banner grabbing).
+
+## 🚀 Funcionalidades Práticas
+
+* **Resolução Dinâmica de Host:** Aceita tanto endereços IP diretos quanto domínios (DNS) informados em tempo real pelo operador.
+* **Banner Grabbing:** Tenta interagir de forma síncrona com portas abertas para extrair a versão dos serviços em execução.
+* **Geração Automática de Artefatos:** Exporta automaticamente os resultados estruturados para um arquivo de auditoria externa (`scan_report.txt`).
+
+## 🛠️ Detalhes Técnicos
+
+O scanner utiliza a biblioteca nativa `socket` do Python, operando sob baixos tempos de timeout (`settimeout(0.5)`) para manter a varredura rápida e mitigar possíveis bloqueios simples por firewalls baseados em lentidão.
+
+## 📊 Habilidades Demonstradas neste Projeto
+
+* Programação em Python focada em Red Team e Offensive Security.
+* Manipulação de protocolos da camada de Transporte (Sockets TCP/IP).
+* Criação de scripts utilitários para automação de testes de intrusão.
+* Gerenciamento de tratamento de exceções de rede em ambientes Linux.
+EOF
