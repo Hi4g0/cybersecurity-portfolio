@@ -1,0 +1,26 @@
+cat << 'EOF' > README.md
+# SOC Live Detector Engine 🛡️
+
+Este projeto em Python simula o núcleo de operação de um sistema **SIEM (Security Information and Event Management)**, processando e correlacionando logs de servidores web em tempo real para identificar atividades maliciosas e tráfego suspeito.
+
+## 🚀 Funcionalidades Práticas
+
+* **Monitoramento Real-Time:** Abordagem contínua (estilo `tail -f`) sobre os arquivos de log.
+* **Regras de Detecção Ativas:**
+    * **HTTP 401 (Aviso):** Identificação de falhas de autenticação recorrentes (indicativo de força bruta).
+    * **Path Traversal (Crítico):** Alerta imediato contra varreduras e tentativas de leitura de arquivos sensíveis do sistema (`/etc/passwd`).
+    * **HTTP 200 (Info):** Auditoria e acompanhamento de tráfego comum de usuários.
+
+## 🛠️ Arquitetura do Caso
+
+O ambiente é composto por dois módulos operacionais independentes:
+1.  `simulador.py`: Gera um fluxo constante de acessos normais e vetores de ataque baseados no framework MITRE ATT&CK.
+2.  `detector.py`: O engine de SOC que analisa cada nova linha inserida no sistema de arquivos, categorizando por severidade e aplicando cores para triagem visual rápida.
+
+## 📊 Habilidades Demonstradas neste Projeto
+
+* Lógica avançada de scripts com Python para Cyber Defense.
+* Manipulação de fluxos de dados contínuos em ambientes POSIX (Linux).
+* Análise de assinaturas de ataques web comuns (OWASP Top 10).
+* Desenvolvimento de regras operacionais de triagem para equipes de SOC.
+EOF
