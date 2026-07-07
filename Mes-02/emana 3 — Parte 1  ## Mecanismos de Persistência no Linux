@@ -1,0 +1,23 @@
+# Semana 3 — Parte 1
+
+## Mecanismos de Persistência no Linux
+
+### Conceitos estudados
+- Persistência de Acesso (MITRE ATT&CK T1053.003)
+- Agendador de Tarefas Cron e tabelas Crontab
+- Monitoramento de alterações de arquivos de sistema (`/etc/cron*`)
+- Logs de auditoria de processos (`/var/log/syslog`)
+
+### Prática realizada
+Configuração e auditoria de uma rotina automatizada em segundo plano utilizando o utilitário `crontab` para validação de execução persistente de processos ocultos no sistema operacional.
+
+### Exemplo real
+```text
+┌──(hiago㉿kali)-[~]
+└─$ crontab -l
+no crontab for hiago
+
+┌──(hiago㉿kali)-[~]
+└─$ cat /home/hiago/alerta_cron.txt
+Tarefa Cron Ativa em 2026
+Tarefa Cron Ativa em 2026
