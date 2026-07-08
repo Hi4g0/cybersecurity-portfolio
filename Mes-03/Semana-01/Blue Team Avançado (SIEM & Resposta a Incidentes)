@@ -1,0 +1,35 @@
+# Mês 3 — Blue Team Avançado (SIEM & Resposta a Incidentes)
+
+## Objetivos do Módulo
+- Centralização e correlação de eventos em larga escala
+- Engenharia de detecção e criação de regras de alerta
+- Domínio de ferramentas de mercado (Splunk / SIEM)
+- Formatação e normalização de logs para ingestão
+
+---
+
+# Semana 1 — Parte 1
+
+## Introdução ao SIEM e Modelagem de Dados Estruturados
+
+### Conceitos estudados
+- Arquitetura de SIEM (Forwarder, Indexer, Search Head)
+- Introdução ao Splunk e Linguagem SPL (Search Processing Language)
+- Formatação de Logs e Estruturação de Dados (JSON: Chave-Valor)
+- Conceito de Normalização de Eventos e Linha do Tempo (*Timestamping*)
+
+### Prática realizada
+Conversão manual de um relatório de pós-exploração de texto não estruturado para um objeto de dados estruturado em formato JSON. Essa modelagem simula o formato ideal de telemetria aceito por soluções de monitoramento e regras de correlação automatizadas em ambientes de SOC corporativos.
+
+### Exemplo real
+```text
+┌──(hiago㉿kali)-[~]
+└─$ cat log_para_siem.json
+{
+  "timestamp": "2026-07-07T14:42:13Z",
+  "host": "kali",
+  "usuario_ativo": "hiago",
+  "kernel_version": "6.18.12-amd64",
+  "alerta_persistencia": true,
+  "detalhe_evento": "Arquivo residual detectado em /home/hiago/alerta_cron.txt"
+}
