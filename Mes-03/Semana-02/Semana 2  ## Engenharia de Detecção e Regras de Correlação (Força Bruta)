@@ -1,0 +1,28 @@
+# Semana 2
+
+## Engenharia de Detecção e Regras de Correlação (Força Bruta)
+
+### Conceitos estudados
+- Lógica de correlação de eventos e definição de limiares (*Thresholds*)
+- Detecção de anomalias volumétricas de autenticação (MITRE ATT&CK T1110)
+- Redução de ruído e triagem de alertas em sistemas SIEM
+- Introdução conceitual à automação de resposta (SOAR)
+
+### Projeto desenvolvido
+**CyberScout - Correlation Engine (Módulo Brute Force)**
+Desenvolvimento de um mecanismo lógico em Python que simula as regras de correlação de um SIEM corporativo. O motor analisa streams de logs de autenticação em tempo real, calcula o acúmulo de falhas consecutivas por chaves de IP e dispara alertas críticos com recomendações de contenção quando o limiar de segurança configurado é violado.
+
+### Exemplo real
+```text
+┌──(hiago㉿kali)-[~]
+└─$ python3 detector_bruteforce.py
+=========================================================
+          CYBERSCOUT - CORRELATION ENGINE                
+=========================================================
+[*] Monitorando logs de autenticação em tempo real...
+
+[🚨 ALERTA CRÍTICO 🚨] Possível ataque de Força Bruta detectado!
+    -> Origem: 192.168.1.15
+    -> Tentativas de Falha acumuladas: 3
+    -> Ação recomendada: Bloquear IP no Firewall.
+=========================================================
