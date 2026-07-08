@@ -1,0 +1,22 @@
+cat << 'EOF' > README.md
+# CyberScout - Pro Network Scanner 🔍
+
+Este projeto em Python é uma ferramenta de **Emulação de Adversário (Red Team)** focada na fase de Reconhecimento de redes.
+
+## 🚀 Funcionalidades Práticas
+
+* **Resolução Dinâmica de Host:** Aceita tanto endereços IP diretos quanto domínios (DNS).
+* **Banner Grabbing:** Tenta interagir com portas abertas para extrair versão dos serviços.
+* **Geração Automática de Artefatos:** Exporta automaticamente os resultados para arquivo de auditoria.
+
+## 🛠️ Detalhes Técnicos
+
+O scanner utiliza a biblioteca nativa `socket` do Python, operando sob baixos tempos de timeout.
+
+## 📊 Habilidades Demonstradas neste Projeto
+
+* Programação em Python focada em Red Team e Offensive Security.
+* Manipulação de protocolos da camada de Transporte (Sockets TCP/IP).
+* Criação de scripts utilitários para automação de testes de intrusão.
+* Gerenciamento de tratamento de exceções de rede em ambientes Linux.
+EOF
