@@ -1,0 +1,33 @@
+# Semana 1 — Parte 2
+
+## Metadados e Pipeline de Ingestão no SIEM (Splunk)
+
+### Conceitos estudados
+- Mecanismo de Ingestão e Indexação de logs em SIEM
+- Os três pilares de metadados: Host, Source e Sourcetype
+- Padronização de tempo global através do campo interno `_time`
+- Persistência e integridade de evidências centralizadas
+
+### Projeto desenvolvido
+**Splunk Ingestion Simulator**
+Desenvolvimento de um script em Python que emula o comportamento lógico de um indexador de SIEM. O simulador recebe um log bruto do sistema de arquivos, processa a linha do tempo e anexa os metadados regulamentares (`host`, `source`, `sourcetype`) necessários para possibilitar pesquisas rápidas em SPL (Search Processing Language).
+
+### Exemplo real
+```text
+┌──(hiago㉿kali)-[~]
+└─$ python3 simulador_ingestao.py
+=========================================================
+          SPLUNK INGESTION SIMULATOR                     
+=========================================================
+[+] LOG INGERIDO COM SUCESSO NO INDEXER!
+---------------------------------------------------------
+{
+    "_time": "2026-07-07T14:42:13Z",
+    "host": "kali",
+    "source": "/home/hiago/log_para_siem.json",
+    "sourcetype": "_json",
+    "raw_message": {
+        "usuario_ativo": "hiago",
+        "alerta_persistencia": true
+    }
+}
