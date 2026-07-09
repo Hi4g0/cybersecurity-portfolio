@@ -8,15 +8,76 @@
 - Lógica de hashing criptográfico (SHA-256) aplicada à integridade pericial.
 - Efeito Avalanche e leitura de arquivos em modo binário (`rb`).
 
-### Projeto desenvolvido
-**CyberForensics - Evidence Collector**
-Desenvolvimento de um script em Python para coleta automatizada e preservação de artefatos em sistemas Linux. O utilitário realiza a extração bit-a-bit do histórico de comandos do terminal (`.bash_history`), armazena o arquivo em um diretório seguro de custódia e gera a assinatura digital SHA-256 (hexdigest) para garantir a integridade da evidência contra posterior adulteração.
+---
 
-### Evidência de execução
-```text
+### 📄 Código Fonte Desenvolvido (`coletor_forense.py`)
+
+```python
+import hashlib
+import os
+from datetime import datetime
+
+print("=========================================================")
+print("          CYBERFORENSICS - EVIDENCE COLLECTOR            ")
+print("=========================================================")
+print("[*] Iniciando coleta pericial de artefatos do Linux...\n")
+
+# 1. Configurando o diretório de custódia (onde as provas ficam salvas)
+pasta_evidencias = "evidencias_coletadas"
+if not os.path.exists(pasta_evidencias):
+    os.makedirs(pasta_evidencias)
+
+# 2. Definindo o artefato a ser coletado (Histórico de comandos do usuário atual)
+caminho_artefato = os.path.expanduser("~/.bash_history")
+arquivo_destino = os.path.join(pasta_evidencias, "bash_history_coletado.txt")
+
+# Criando um arquivo simulado de histórico caso o Kali esteja com ele vazio
+if not os.path.exists(caminho_artefato) or os.path.getsize(caminho_artefato) == 0:
+    with open(caminho_artefato, "w") as f:
+        f.write("whoami\ncat /etc/passwd\nrm -rf /var/log/nginx/access.log\n")
+
+try:
+    # 3. Fazendo a cópia bit-a-bit do artefato (Preservação)
+    with open(caminho_artefato, "rb") as f_origem:
+        conteudo = f_origem.read()
+        
+    with open(arquivo_destino, "wb") as f_destino:
+        f_destino.write(conteudo)
+    
+    # 4. Calculando o Hash SHA-256 para a Cadeia de Custódia (Integridade)
+    hash_sha256 = hashlib.sha256(conteudo).hexdigest()
+    
+    print("[+] ARTEFATO COLETADO COM SUCESSO!")
+    print(f"    -> Origem: {caminho_artefato}")
+    print(f"    -> Destino Seguro: {arquivo_destino}")
+    print(f"    -> CADEIA DE CUSTÓDIA (SHA-256): {hash_sha256}")
+    print("\n[*] Evidência lacrada digitalmente.")
+
+except Exception as e:
+    print(f"[!] ERRO NA COLETA: {str(e)}")
+
+print("=========================================================")
+
+🖥️ Evidência de Execução no Terminal (Kali Linux)
+Plaintext
+
+┌──(hiago㉿kali)-[~]
+└─$ nano coletor_forense.py      
+                                                                                                           
+┌──(hiago㉿kali)-[~]
+└─$ python3 coletor_forense.py
+=========================================================
+          CYBERFORENSICS - EVIDENCE COLLECTOR            
+=========================================================
 [*] Iniciando coleta pericial de artefatos do Linux...
+
 [+] ARTEFATO COLETADO COM SUCESSO!
     -> Origem: /home/hiago/.bash_history
     -> Destino Seguro: evidencias_coletadas/bash_history_coletado.txt
     -> CADEIA DE CUSTÓDIA (SHA-256): 2101a70bdd489d93613c047b4ba0f63707e0063d454de44763a7f62e1efd0591
+
 [*] Evidência lacrada digitalmente.
+=========================================================
+                                                                                                           
+┌──(hiago㉿kali)-[~]
+└─$
