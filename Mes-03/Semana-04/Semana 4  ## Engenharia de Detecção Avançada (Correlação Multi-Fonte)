@@ -1,0 +1,19 @@
+# Semana 4
+
+## Engenharia de Detecção Avançada (Correlação Multi-Fonte)
+
+### Conceitos estudados
+- Correlação Cruzada de Logs (Firewall + OS)
+- Redução de Falsos-Positivos no SIEM
+- Ciclo de vida do ataque (MITRE ATT&CK: Reconnaissance -> Initial Access)
+
+### Projeto desenvolvido
+**CyberScout - Advanced Detection Engine**
+Criação de um motor de correlação em Python que cruza logs de sensores diferentes (Rede e Host). O script identifica quando um IP hostil executa um port scan (detectado pelo Firewall) e, posteriormente, obtém sucesso em uma autenticação (detectado pelo SO), gerando um alerta automatizado de Invasão Confirmada.
+
+### Exemplo real
+```text
+[🚨 ALERTA ULTRA CRÍTICO — INVASÃO CONFIRMADA 🚨]
+    -> IP Hostil: 203.0.113.5
+    -> Histórico: Detectado realizando varredura no Firewall.
+    -> Situação Atual: Efetuou LOGIN COM SUCESSO no usuário: [root]
