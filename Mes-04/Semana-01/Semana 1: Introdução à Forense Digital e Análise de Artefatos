@@ -1,0 +1,22 @@
+# Mês 4 - Forense Digital e Resposta a Incidentes
+
+## Semana 1: Introdução à Forense Digital e Análise de Artefatos
+
+### Conceitos estudados
+- Princípios fundamentais de forense: Preservação, Integridade e Cadeia de Custódia.
+- Análise de Artefatos de sistema operacional (Linux `.bash_history`).
+- Lógica de hashing criptográfico (SHA-256) aplicada à integridade pericial.
+- Efeito Avalanche e leitura de arquivos em modo binário (`rb`).
+
+### Projeto desenvolvido
+**CyberForensics - Evidence Collector**
+Desenvolvimento de um script em Python para coleta automatizada e preservação de artefatos em sistemas Linux. O utilitário realiza a extração bit-a-bit do histórico de comandos do terminal (`.bash_history`), armazena o arquivo em um diretório seguro de custódia e gera a assinatura digital SHA-256 (hexdigest) para garantir a integridade da evidência contra posterior adulteração.
+
+### Evidência de execução
+```text
+[*] Iniciando coleta pericial de artefatos do Linux...
+[+] ARTEFATO COLETADO COM SUCESSO!
+    -> Origem: /home/hiago/.bash_history
+    -> Destino Seguro: evidencias_coletadas/bash_history_coletado.txt
+    -> CADEIA DE CUSTÓDIA (SHA-256): 2101a70bdd489d93613c047b4ba0f63707e0063d454de44763a7f62e1efd0591
+[*] Evidência lacrada digitalmente.
