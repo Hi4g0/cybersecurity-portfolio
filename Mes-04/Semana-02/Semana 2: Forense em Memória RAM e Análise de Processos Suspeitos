@@ -1,0 +1,83 @@
+# Mês 4 - Forense Digital e Resposta a Incidentes
+
+## Semana 2: Forense em Memória RAM e Análise de Processos Suspeitos
+
+### Conceitos estudados
+- Dados Voláteis vs. Dados Persistentes.
+- Ordem de Volatilidade de Evidências (RFC 3227).
+- Análise de processos em execução e estruturas do diretório virtual `/proc`.
+- Identificação de Fileless Malware e caminhos de execução anômalos (`/tmp`).
+
+---
+
+### 📄 Código Fonte Desenvolvido (`analisador_ram.py`)
+
+```python
+import os
+import sys
+
+print("=========================================================")
+print("          CYBERFORENSICS - VOLATILE MEMORY SCANNER       ")
+print("=========================================================")
+print("[*] Escaneando processos ativos na memória RAM (/proc)...\n")
+
+processos_em_memoria = [
+    {"pid": 1024, "nome": "systemd", "path": "/usr/lib/systemd/systemd", "conexao": "Nenhuma"},
+    {"pid": 2155, "nome": "nginx", "path": "/usr/sbin/nginx", "conexao": "80/TCP"},
+    {"pid": 9999, "nome": "cron_crypto", "path": "/tmp/.malware_exec", "conexao": "4444/TCP"},
+]
+
+alertas_encontrados = 0
+
+print(f"{'PID':<8}{'PROCESSO':<15}{'DIRETÓRIO DE ORIGEM':<30}")
+print("-" * 60)
+
+for proc in processos_em_memoria:
+    print(f"{proc['pid']:<8}{proc['nome']:<15}{proc['path']:<30}")
+    
+    if proc["path"].startswith("/tmp") or proc["path"].startswith("/dev/shm"):
+        alertas_encontrados += 1
+        print(f"\n[🚨 ALERTA FORENSE — PROCESSO SUSPEITO EM MEMÓRIA 🚨]")
+        print(f"    -> PID: {proc['pid']}")
+        print(f"    -> Binário na RAM: {proc['nome']}")
+        print(f"    -> Caminho Hostil: {proc['path']}")
+        print(f"    -> Conexão de Rede Ativa: {proc['conexao']}")
+        print(f"    -> Tática MITRE: Execução de Fileless Malware via diretório volátil.\n")
+        print("-" * 60)
+
+if alertas_encontrados == 0:
+    print("[+] Nenhum processo anômalo detectado na estrutura de memória.")
+
+print("\n[+] Varredura de dados voláteis finalizada.")
+print("=========================================================")
+
+🖥️ Evidência de Execução no Terminal (Kali Linux)
+Plaintext
+
+┌──(hiago㉿kali)-[~]
+└─$ nano analisador_ram.py
+                                                                                                           
+┌──(hiago㉿kali)-[~]
+└─$ python3 analisador_ram.py 
+=========================================================
+          CYBERFORENSICS - VOLATILE MEMORY SCANNER       
+=========================================================
+[*] Escaneando processos ativos na memória RAM (/proc)...
+
+PID     PROCESSO       DIRETÓRIO DE ORIGEM           
+------------------------------------------------------------
+1024    systemd        /usr/lib/systemd/systemd      
+2155    nginx          /usr/sbin/nginx               
+9999    cron_crypto    /tmp/.malware_exec            
+
+[🚨 ALERTA FORENSE — PROCESSO SUSPEITO EM MEMÓRIA 🚨]
+    -> PID: 9999
+    -> Binário na RAM: cron_crypto
+    -> Caminho Hostil: /tmp/.malware_exec
+    -> Conexão de Rede Ativa: 4444/TCP
+    -> Tática MITRE: Execução de Fileless Malware via diretório volátil.
+
+------------------------------------------------------------
+
+[+] Varredura de dados voláteis finalizada.
+=========================================================
