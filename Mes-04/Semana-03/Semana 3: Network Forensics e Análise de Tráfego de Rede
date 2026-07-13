@@ -1,0 +1,77 @@
+# Mês 4 - Forense Digital e Resposta a Incidentes
+
+## Semana 3: Network Forensics e Análise de Tráfego de Rede
+
+### Conceitos estudados
+- Fundamentos de Network Forensics e análise de arquivos de captura (`.pcap`).
+- Investigação de protocolos de rede e detecção de anomalias em tráfego de dados.
+- Mecanismo de **DNS Tunneling** utilizado para evasão de Firewalls e exfiltração de dados confidenciais.
+- Identificação de payloads codificados (Base64) em requisições de resolução de nomes.
+
+---
+
+### 📄 Código Fonte Desenvolvido (`analisador_pcap.py`)
+
+```python
+print("=========================================================")
+print("          CYBERFORENSICS - NETWORK PACAP ANALYZER        ")
+print("=========================================================")
+print("[*] Lendo pacotes de dados da captura de rede...\n")
+
+pacotes_capturados = [
+    {"id": 1, "protocolo": "HTTP", "src_ip": "192.168.1.50", "dst_ip": "8.8.8.8", "info": "GET /index.html"},
+    {"id": 2, "protocolo": "DNS", "src_ip": "192.168.1.50", "dst_ip": "8.8.4.4", "info": "query: google.com"},
+    {"id": 3, "protocolo": "DNS", "src_ip": "192.168.1.50", "dst_ip": "203.0.113.5", "info": "query: dXN1YXJpb19yb290X3NlbmhhXzEyMzQ1Ngo=.atacante.com"},
+]
+
+print(f"{'ID':<5}{'PROTOCOLO':<12}{'IP ORIGEM':<17}{'IP DESTINO':<17}")
+print("-" * 60)
+
+alertas_rede = 0
+
+for pkt in pacotes_capturados:
+    print(f"{pkt['id']:<5}{pkt['protocolo']:<12}{pkt['src_ip']:<17}{pkt['dst_ip']:<17}")
+    
+    if pkt["protocolo"] == "DNS" and len(pkt["info"]) > 40:
+        alertas_rede += 1
+        print(f"\n[🚨 ALERTA FORENSE — POSSÍVEL EXFILTRAÇÃO VIA DNS TUNNELING 🚨]")
+        print(f"    -> Pacote ID: {pkt['id']}")
+        print(f"    -> IP Suspeito (Origem): {pkt['src_ip']}")
+        print(f"    -> Servidor Externo (Destino): {pkt['dst_ip']}")
+        print(f"    -> Payload Suspeito Detectado: {pkt['info']}")
+        print(f"    -> Diagnóstico: String longa e codificada em requisição de resolução de nomes.\n")
+        print("-" * 60)
+
+if alertas_rede == 0:
+    print("[+] Nenhum comportamento anômalo encontrado nos pacotes de rede.")
+
+print("\n[+] Análise forense de rede finalizada.")
+print("=========================================================")
+
+🖥️ Evidência de Execução no Terminal (Kali Linux)
+Plaintext
+
+┌──(hiago㉿kali)-[~]
+└─$ python3 analisador_pcap.py
+=========================================================
+          CYBERFORENSICS - NETWORK PACAP ANALYZER        
+=========================================================
+[*] Lendo pacotes de dados da captura de rede...
+
+ID   PROTOCOLO   IP ORIGEM        IP DESTINO       
+------------------------------------------------------------
+1    HTTP        192.168.1.50     8.8.8.8          
+2    DNS         192.168.1.50     8.8.4.4          
+3    DNS         192.168.1.50     203.0.113.5      
+
+[🚨 ALERTA FORENSE — POSSÍVEL EXFILTRAÇÃO VIA DNS TUNNELING 🚨]
+    -> Pacote ID: 3
+    -> IP Suspeito (Origem): 192.168.1.50
+    -> Servidor Externo (Destino): 203.0.113.5
+    -> Payload Suspeito Detectado: query: dXN1YXJpb19yb290X3NlbmhhXzEyMzQ1Ngo=.atacante.com
+    -> Diagnóstico: String longa e codificada em requisição de resolução de nomes.
+
+------------------------------------------------------------
+
+[+] Análise forense de rede finalizada.
+=========================================================
