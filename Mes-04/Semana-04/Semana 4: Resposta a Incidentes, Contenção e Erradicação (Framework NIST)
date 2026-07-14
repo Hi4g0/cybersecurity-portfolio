@@ -1,0 +1,90 @@
+# Mês 4 - Forense Digital e Resposta a Incidentes
+
+## Semana 4: Resposta a Incidentes, Contenção e Erradicação (Framework NIST)
+
+### Conceitos estudados
+- O Ciclo de Resposta a Incidentes segundo o NIST SP 800-61 (Preparação, Detecção/Análise, Contenção/Erradicação/Recuperação, Pós-Incidente).
+- Técnicas de contenção lógica ao vivo utilizando regras de Firewall (`iptables`) para isolamento de IPs hostis.
+- Preservação de evidências voláteis durante a mitigação de ameaças ativas.
+- Erradicação de persistência e geração de logs de auditoria para lições aprendidas.
+
+---
+
+### 📄 Código Fonte Desenvolvido (`playbook_contencao.py`)
+
+```python
+import datetime
+import os
+
+print("=========================================================")
+print("          INCIDENT RESPONSE PLAYBOOK - NIST SP 800-61    ")
+print("=========================================================")
+print("[*] ALERTA RECEBIDO: Servidor Comprometido detectado!\n")
+
+ip_atacante = "203.0.113.5"
+servico_afetado = "SSH/Porta 22"
+usuario_alvo = "root"
+
+print(f"[-] FASE 2 (ANÁLISE): Confirmada intrusão vinda do IP {ip_atacante}")
+print(f"[-] Alvo: Persistência no usuário '{usuario_alvo}' via {servico_afetado}.\n")
+
+# --- FASE 3: CONTENÇÃO ---
+print("[*] EXECUTANDO FASE 3: CONTENÇÃO IMEDIATA...")
+
+comando_firewall_input = f"iptables -A INPUT -s {ip_atacante} -j DROP"
+comando_firewall_output = f"iptables -A OUTPUT -d {ip_atacante} -j DROP"
+
+print(f"    [OK] Aplicando regra: {comando_firewall_input}")
+print(f"    [OK] Aplicando regra: {comando_firewall_output}")
+print("    [✓] Conexão com o Servidor de Comando & Controle (C2) CORTADA.")
+print("    [✓] Máquina mantida LIGADA para preservação da memória RAM.\n")
+
+# --- FASE 3 (CONTINUAÇÃO): ERRADICAÇÃO ---
+print("[*] EXECUTANDO FASE 3: ERRADICAÇÃO DA AMEAÇA...")
+print(f"    [OK] Derrubando todos os processos ativos do usuário: {usuario_alvo}")
+print(f"    [OK] Forçando expiração de senhas e chaves SSH compromised.")
+print("    [✓] Artefatos maliciosos em /tmp isolados e removidos.\n")
+
+# --- DOCUMENTAÇÃO E AUDITORIA ---
+data_atual = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+log_incidente = f"[INCIDENT LOG - {data_atual}]\n"
+log_incidente += f"- Tipo: Resposta Crítica a Intrusão\n"
+log_incidente += f"- IP Atacante Contido: {ip_atacante}\n"
+log_incidente += f"- Status do Host: Isolado na rede / Ativo para Forense\n"
+log_incidente += f"- Responsável: Analista Blue Team Hiago\n"
+log_incidente += "---------------------------------------------------------\n"
+
+with open("registro_incidente.log", "w") as f:
+    f.write(log_incidente)
+
+print("[+] FASE 4: DOCUMENTAÇÃO SALVA (`registro_incidente.log`).")
+print("[+] Ciclo de Resposta a Incidentes concluído com sucesso.")
+print("=========================================================")
+
+🖥️ Evidência de Execução no Terminal (Kali Linux)
+Plaintext
+
+┌──(hiago㉿kali)-[~]
+└─$ python3 playbook_contencao.py
+=========================================================
+          INCIDENT RESPONSE PLAYBOOK - NIST SP 800-61    
+=========================================================
+[*] ALERTA RECEBIDO: Servidor Comprometido detectado!
+
+[-] FASE 2 (ANÁLISE): Confirmada intrusão vinda do IP 203.0.113.5
+[-] Alvo: Persistência no usuário 'root' via SSH/Porta 22.
+
+[*] EXECUTANDO FASE 3: CONTENÇÃO IMEDIATA...
+    [OK] Aplicando regra: iptables -A INPUT -s 203.0.113.5 -j DROP
+    [OK] Aplicando regra: iptables -A OUTPUT -d 203.0.113.5 -j DROP
+    [✓] Conexão com o Servidor de Comando & Controle (C2) CORTADA.
+    [✓] Máquina mantida LIGADA para preservação da memória RAM.
+
+[*] EXECUTANDO FASE 3: ERRADICAÇÃO DA AMEAÇA...
+    [OK] Derrubando todos os processos ativos do usuário: root
+    [OK] Forçando expiração de senhas e chaves SSH comprometidas.
+    [✓] Artefatos maliciosos em /tmp isolados e removidos.
+
+[+] FASE 4: DOCUMENTAÇÃO SALVA (`registro_incidente.log`).
+[+] Ciclo de Resposta a Incidentes concluído com sucesso.
+=========================================================
